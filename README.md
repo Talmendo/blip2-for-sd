@@ -13,10 +13,14 @@ Format followd is roughly
 
 The default model will be loaded automatically from huggingface.
 You will be presented with an input to specify the folder to process after the model is loaded.
-<img width="854" alt="" src="https://github.com/Talmendo/blip2-for-sd/assets/141401796/a89a89be-57c3-41df-bb86-82a5d6282f11">
+
+<img width="854" alt="Screenshot 2023-08-04 102650" src="https://github.com/Talmendo/blip2-for-sd/assets/141401796/fa40cae5-90a4-4dd5-be1d-fc0e8312251a">
+
 
 - The image or source folder should have the following structure:
-![Screenshot 2023-08-04 102544](https://github.com/Talmendo/blip2-for-sd/assets/141401796/2eec469b-2a8b-465d-bd65-0a2e34dc406c)
+
+![Screenshot 2023-08-04 102544](https://github.com/Talmendo/blip2-for-sd/assets/141401796/eea9c2b0-e96a-40e4-8a6d-32dd7aa3e802)
+
 
 Each folder represents a base prompt to be used for every image inside.
 
