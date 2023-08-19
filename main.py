@@ -56,7 +56,7 @@ def main(path):
       caption = ""
       # generate caption
       try:
-        caption = caption_processor.CaptionProcessor(model, processor, device).caption_me(prompt, image)
+        caption = caption_processor.CaptionProcessor(model, processor, device).caption_me_formatted(prompt, image)
       except:
         print("Error creating caption for file: " + file)
 
@@ -67,7 +67,7 @@ def main(path):
 
 if __name__ == "__main__":
   # use "Salesforce/blip2-opt-2.7b" as default, or with enough VRAM "Salesforce/blip2-opt-6.7b-coco" for better results
-  load_model(model_name="Salesforce/blip2-opt-2.7b")
+  load_model(model_name="Salesforce/blip2-opt-6.7b-coco")
 
   while True:
     print("Enter path: ")
