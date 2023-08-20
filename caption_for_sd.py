@@ -7,8 +7,10 @@ from tqdm import tqdm
 
 import caption_processor
 
-def load_model(model_name="Salesforce/blip2-opt-2.7b"):
+def load_model(model_name):
   print(f"Loading Model {model_name}")
+  if model_name == "Salesforce/blip2-opt-2.7b":
+    print("WARNING: Salesforce/blip2-opt-2.7b will give worse results, consider using Salesforce/blip2-opt-6.7b-coco instead if possible.")
   processor = Blip2Processor.from_pretrained(model_name)
   model = Blip2ForConditionalGeneration.from_pretrained(model_name, torch_dtype=torch.float16)
 
