@@ -1,3 +1,4 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
 accelerate==0.21.0
 anyio==3.7.1
 argon2-cffi==23.1.0
