@@ -46,7 +46,7 @@ class CaptionProcessor:
     )
 
   def process(self, prompt, image):
-    return self.processor(image, text=prompt, return_tensors="pt", padding=True, truncation=True, max_length=75).to(self.device, torch.float16)
+    return self.processor(image, text=prompt, return_tensors="pt", padding=True, truncation=True, max_length=75).to(self.device, torch.bfloat16)
 
   def caption_from(self, generated):
     caption_list = self.processor.batch_decode(generated, skip_special_tokens=True)

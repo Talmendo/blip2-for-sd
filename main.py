@@ -1,11 +1,6 @@
-import requests, torch, sys, os
-
 from importlib import reload
-from PIL import Image
-from transformers import AutoProcessor, Blip2ForConditionalGeneration
-from tqdm import tqdm
-import caption_for_sd
 
+import caption_for_sd
 import caption_processor
 
 model = None

@@ -11,8 +11,6 @@ def load_model(model_name):
   print(f"Loading Model {model_name}")
   if model_name == "Salesforce/blip2-opt-2.7b":
     print("WARNING: Salesforce/blip2-opt-2.7b will give worse results, consider using Salesforce/blip2-opt-6.7b-coco instead if possible.")
-  processor = Blip2Processor.from_pretrained(model_name)
-  model = Blip2ForConditionalGeneration.from_pretrained(model_name, torch_dtype=torch.float16)
 
   device = None
   if torch.cuda.is_available():
@@ -22,9 +20,8 @@ def load_model(model_name):
     print("CUDA not available, using CPU")
     device = "cpu"
 
-  print("Moving model to device")
-  model = model.to(device)
-  print("Model loaded")
+  processor = Blip2Processor.from_pretrained(model_name)
+  model = Blip2ForConditionalGeneration.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
 
   return (model, processor, device)
 
