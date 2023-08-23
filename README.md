@@ -29,5 +29,10 @@ Each folder represents a base prompt to be used for every image inside.
 
 ## Models
 
-Default model is  `Salesforce/blip2-opt-6.7b-coco`. Requires ~20GB of VRAM.
+Default model is  `Salesforce/blip2-opt-6.7b-coco`. Requires ~20GB of VRAM unless run with bitsandbytes, then  only ~8GB. See below.
 Also tested with `Salesforce/blip2-opt-2.7b` which seems to give much worse results, but is also less demanding on your hardware and a bit faster.
+
+## Saving VRAM
+
+4bit Quantization is supported. Simply set use_4bit=True when calling load_model
+You need bitsandbytes for that. Probably won't work on Windows.

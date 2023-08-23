@@ -26,6 +26,7 @@ class CaptionProcessor:
       num_beams=config["num_beams"],
       repetition_penalty=config["repetition_penalty"],
       no_repeat_ngram_size=config["max_repititions"],
+      do_sample=config["do_sample"],
     )
 
   def gen(self, inputs, max_length=10, min_length=0, top_k=30, top_p=0.92, num_beams=4, repetition_penalty=1.5, no_repeat_ngram_size=2):

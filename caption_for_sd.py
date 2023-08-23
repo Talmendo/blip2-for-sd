@@ -2,12 +2,12 @@ import requests, torch, sys, os
 
 from importlib import reload
 from PIL import Image
-from transformers import Blip2Processor, BlipProcessor, Blip2ForConditionalGeneration
+from transformers import Blip2Processor, BlipProcessor, Blip2ForConditionalGeneration, BitsAndBytesConfig
 from tqdm import tqdm
 
 import caption_processor
 
-def load_model(model_name):
+def load_model(model_name, use_4bit=False):
   print(f"Loading Model {model_name}")
   if model_name == "Salesforce/blip2-opt-2.7b":
     print("WARNING: Salesforce/blip2-opt-2.7b will give worse results, consider using Salesforce/blip2-opt-6.7b-coco instead if possible.")
@@ -20,8 +20,20 @@ def load_model(model_name):
     print("CUDA not available, using CPU")
     device = "cpu"
 
+  model = None
+  if use_4bit:
+    bnb_config = BitsAndBytesConfig(
+      load_in_4bit=True,
+      bnb_4bit_quant_type="nf4",
+      bnb_4bit_use_double_quant=True,
+      bnb_4bit_compute_dtype=torch.bfloat16
+    )
+
+    model = Blip2ForConditionalGeneration.from_pretrained(model_name, torch_dtype=torch.bfloat16, quantization_config=bnb_config, device_map="auto")
+  else:
+    model = Blip2ForConditionalGeneration.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
+
   processor = Blip2Processor.from_pretrained(model_name)
-  model = Blip2ForConditionalGeneration.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
 
   return (model, processor, device)
 
@@ -45,6 +57,10 @@ class CaptionForSD:
 
   def run(self, path):
     prompt_file_dict = {}
+
+    if not os.path.isdir(path):
+      print("Path is not a directory")
+      return
 
     # list all sub dirs in path
     sub_dirs = [dir for dir in os.listdir(path) if os.path.isdir(os.path.join(path, dir))]

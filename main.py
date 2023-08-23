@@ -12,6 +12,7 @@ config = {
   "min_length": 0,
   "top_k": 30,
   "top_p": 0.92,
+  "do_sample": False,
   "num_beams": 4,
   "repetition_penalty": 1.5,
   "max_repititions": 2
