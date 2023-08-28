@@ -79,10 +79,21 @@ class CaptionForSD:
         # read image
         image = Image.open(os.path.join(path, prompt, file))
 
+        # read details if available
+        details = ""
+        try:
+          with open(os.path.join(path, prompt, os.path.splitext(file)[0] + ".details.txt"), "r") as details_file:
+            details = details_file.read()
+        except FileNotFoundError:
+          pass
+        except Exception as e:
+          print("Error reading details for file: " + file)
+          raise e
+
         caption = ""
         # generate caption
         try:
-          caption = self.caption_processor_ref.caption_me_formatted(prompt, image)
+          caption = self.caption_processor_ref.caption_me_formatted(prompt, image, details=details)
         except:
           print("Error creating caption for file: " + file)
 

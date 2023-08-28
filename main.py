@@ -31,7 +31,7 @@ def main(path):
 
 if __name__ == "__main__":
   # strongly recommend to use "Salesforce/blip2-opt-6.7b-coco" for better results, Salesforce/blip2-opt-2.7b will be much worse
-  load_model("Salesforce/blip2-opt-2.7b")
+  load_model("Salesforce/blip2-opt-6.7b-coco")
 
   while True:
     print("Enter path: ")

@@ -29,7 +29,7 @@ class CaptionProcessor:
       do_sample=config["do_sample"],
     )
 
-  def gen(self, inputs, max_length=10, min_length=0, top_k=30, top_p=0.92, num_beams=4, repetition_penalty=1.5, no_repeat_ngram_size=2):
+  def gen(self, inputs, max_length=10, min_length=0, top_k=30, top_p=0.92, num_beams=4, repetition_penalty=1.5, no_repeat_ngram_size=2, do_sample=False):
     return self.model.generate(
       **inputs,
       # max_new_tokens=25,                        # Number of tokens to generate
@@ -39,7 +39,7 @@ class CaptionProcessor:
       early_stopping=True,                        # Stop when no new tokens are generated
       repetition_penalty=repetition_penalty,      # Penalize repeated words
       no_repeat_ngram_size=no_repeat_ngram_size,  # Number of words that can be repeated
-      # do_sample=True,                           # Introduce randomness to captions
+      do_sample=do_sample,                        # Introduce randomness to captions
       # temperature=0.9,                          # Measure of randomness 0-1, 0 means no randomness
       top_k=top_k,                                # Number of highest probability tokens to keep, 0 means no filtering
       top_p=top_p,                                # Probability threshold, 0 means no filtering
@@ -113,7 +113,7 @@ class CaptionProcessor:
       print(e)
     return f"{initial_prompt}, {prompt}"
 
-  def caption_me_formatted(self, initial_prompt, image):
+  def caption_me_formatted(self, initial_prompt, image, details=""):
     prompt = ""
 
     q = {
@@ -121,12 +121,12 @@ class CaptionProcessor:
       "hair_length":  ("What is her hair length?", None),
       "style":        ("Between the choices selfie, mirror selfie, candid, professional portrait what is the style of the photo?", None),
       "clothing":     ("What is the subject wearing if anything?", None),
-      "action":       ("What is the subject doing? Be succint", {"max_length": 6}),
+      "action":       ("What is the subject doing? Be succint", {"max_length": 15}),
       "framing":      ("Between the choices closeup, upper body shot, full body shot what is the framing of the photo?", None),
-      "setting":      ("Describe the setting and background of the image, what can you see? Be descriptive and vivid", {"max_length": 35}),
+      "setting":      ("Describe the setting and background of the image, what can you see? Be descriptive and vivid", {"max_length": 25}),
       "lighting":     ("What is the lighting like? Use professional terms, like: soft lighting, studio lighting, natural lighting and so on", None),
-      "angle":        ("What angle is the picture taken from? Be succint, like: from the side, from below, from front", None),
-      "camera":       ("What kind of camera could this picture have been taken with? Be specific and guess a brand with specific camera type", None),
+      # "angle":        ("What angle is the picture taken from? Be succint, like: from the side, from below, from front", None),
+      # "camera":       ("What kind of camera could this picture have been taken with? Be specific and guess a brand with specific camera type", None),
     }
 
     a = {}
@@ -135,7 +135,11 @@ class CaptionProcessor:
       for key, question in q.items():
         a[key] = self.ask(question[0], image, override_config=question[1])
 
-      prompt = self.sanitise_caption(f"{a['style']}, {initial_prompt} with {a['hair_color']} {a['hair_length']} hair, wearing {a['clothing']}, {a['action']}, {a['framing']}, {a['setting']}, {a['lighting']}, {a['angle']}, shot on {a['camera']}")
+      if details:
+        details = f"{details}, "
+
+      # prompt = self.sanitise_caption(f"{a['style']}, {initial_prompt}, with {a['hair_color']} {a['hair_length']} hair, wearing {a['clothing']}, {a['action']}, {details} {a['framing']}, {a['setting']}, {a['lighting']}, {a['angle']}, shot on {a['camera']}")
+      prompt = self.sanitise_caption(f"{a['style']}, {initial_prompt}, with {a['hair_color']} {a['hair_length']} hair, wearing {a['clothing']}, {a['action']}, {details} {a['framing']}, {a['setting']}, {a['lighting']}")
     except Exception as e:
       print(e)
     
