@@ -27,6 +27,12 @@ You will be presented with an input to specify the folder to process after the m
 
 Each folder represents a base prompt to be used for every image inside.
 
+**Custom Keywords**
+Add a `image_name.details.txt` file next to an image to inject specific keywords to the prompt. This is useful if you want to do some manual captioning but don't want to bother describing the whole image or if you need to make sure certain keywords are present.
+Example:
+image001.png
+image001.details.txt
+
 ## Models
 
 Default model is  `Salesforce/blip2-opt-6.7b-coco`. Requires ~20GB of VRAM unless run with bitsandbytes, then  only ~8GB. See below.
